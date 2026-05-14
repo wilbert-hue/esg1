@@ -8,7 +8,9 @@ import {
   normCell,
   parseGroupedHeader,
   padRow,
+  sanitizeMislabeledGroupHeaders,
   stripColumnGroupByLabel,
+  trimTrailingEmptyColumns,
 } from '@/lib/cmi-propositions'
 import { cn } from '@/lib/utils'
 
@@ -130,7 +132,13 @@ export function CustomerIntelligencePropositions({ title }: { title?: string }) 
       </div>
 
       <div className="flex flex-col gap-4">
-        {payload.propositions.map((p, index) => (
+        {payload.propositions.map((p, index) => {
+          let table = trimTrailingEmptyColumns(p)
+          table = sanitizeMislabeledGroupHeaders(table)
+          if (table.id === 1) {
+            table = stripColumnGroupByLabel(table, 'Professional Drivers')
+          }
+          return (
           <details
             key={p.id}
             open={index === 0}
@@ -147,14 +155,11 @@ export function CustomerIntelligencePropositions({ title }: { title?: string }) 
               <p className="text-[11px] font-medium leading-snug text-gray-700 whitespace-pre-line">
                 {normCell(p.title)}
               </p>
-              <PropositionTable
-                proposition={
-                  p.id === 1 ? stripColumnGroupByLabel(p, 'Professional Drivers') : p
-                }
-              />
+              <PropositionTable proposition={table} />
             </div>
           </details>
-        ))}
+          )
+        })}
       </div>
     </div>
   )

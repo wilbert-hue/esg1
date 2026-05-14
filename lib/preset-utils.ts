@@ -28,11 +28,11 @@ function getCountryGeographiesSet(data: ComparisonData | null): Set<string> | nu
  * @returns Array of top region names
  */
 /**
- * Prefer "By Offering" when present so Quick Filters align with primary taxonomy.
+ * Prefer primary actuator taxonomy when present so Quick Filters align with default view.
  */
 export function preferredSegmentType(data: ComparisonData | null): string | null {
   if (!data?.dimensions?.segments) return null
-  if (data.dimensions.segments['By Offering']) return 'By Offering'
+  if (data.dimensions.segments['By Actuation Technology']) return 'By Actuation Technology'
   return getFirstSegmentType(data)
 }
 
@@ -251,7 +251,7 @@ export function createTopMarketFilters(data: ComparisonData | null): Partial<Fil
     viewMode: 'geography-mode', // Geography on X-axis, segments as series
     geographies: topRegions,
     segments: firstLevelSegments,
-    segmentType: segmentType || 'By Offering',
+    segmentType: segmentType || 'By Actuation Technology',
     yearRange: [2023, 2027],
     dataType: 'value',
     aggregationLevel: null,
@@ -264,7 +264,7 @@ export function createFullComparisonFilters(data: ComparisonData | null): Partia
     viewMode: 'matrix',
     yearRange: [2023, 2027],
     dataType: 'value',
-    segmentType: segmentType || 'By Offering',
+    segmentType: segmentType || 'By Actuation Technology',
     segments: [],
     geographies: [],
     aggregationLevel: null,
@@ -291,7 +291,7 @@ export function createGrowthLeadersFilters(data: ComparisonData | null): Partial
     viewMode: 'geography-mode', // Geography on X-axis, segments as series
     geographies: topRegions,
     segments: firstLevelSegments,
-    segmentType: segmentType || 'By Offering',
+    segmentType: segmentType || 'By Actuation Technology',
     yearRange: [2025, 2031],
     dataType: 'value',
     aggregationLevel: null,
@@ -318,7 +318,7 @@ export function createEmergingMarketsFilters(data: ComparisonData | null): Parti
     viewMode: 'geography-mode', // Geography on X-axis, segments as series
     geographies: topCountries,
     segments: firstLevelSegments,
-    segmentType: segmentType || 'By Offering',
+    segmentType: segmentType || 'By Actuation Technology',
     yearRange: [2025, 2031],
     dataType: 'value',
     aggregationLevel: null,

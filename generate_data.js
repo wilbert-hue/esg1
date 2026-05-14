@@ -2,11 +2,12 @@ const fs = require('fs');
 const path = require('path');
 
 /**
- * Synthetic oil & gas security market data aligned with dashboard segment taxonomies:
- * - By Offering (physical + cyber + IAM + data + platforms + services hierarchy)
- * - By Operation Stage (upstream / midstream / downstream)
- * - By Deployment Mode
- * - By End User
+ * Synthetic park lock actuator market data aligned with dashboard segment taxonomies:
+ * - By Actuation Technology
+ * - By Motion Output Type
+ * - By Transmission and Driveline Application
+ * - By Vehicle Type
+ * - By Sales Channel
  * Geography keys mirror segmentation_analysis (regions, countries, By Country).
  */
 
@@ -46,110 +47,32 @@ const regionGrowthRates = {
 
 /** Weighted trees: only leaves are positive numbers; objects group siblings. */
 const segmentTrees = {
-  'By Offering': {
-    'Physical Security': {
-      'Video Surveillance Systems': {
-        'Fixed Cameras': 2.5,
-        'PTZ Cameras': 2,
-        'Thermal / Infrared Cameras': 1.6,
-        'Drone-based Surveillance': 1.1,
-      },
-      'Access Control Systems': {
-        'Biometric Systems': 1.2,
-        'Card / RFID-based Systems': 1.2,
-      },
-      'Multi-factor Authentication Systems': 1,
-      'Perimeter & Intrusion Detection': {
-        'Fence-mounted Sensors': 1,
-        'Fiber-optic Detection Systems': 1,
-        'Motion Sensors': 1.1,
-        'Ground Radar Systems': 0.9,
-      },
-      'Screening & Detection Systems': {
-        'Explosive Detection': 1,
-        'Gas Leak Detection': 1.1,
-        'Radiation Detection': 0.9,
-      },
-      'Command & Control (PSIM)': 0.9,
-      'Maritime & Offshore Security Systems': 0.85,
-    },
-    'Cybersecurity (IT & OT)': {
-      'Network Security': {
-        Firewalls: 1.2,
-        'IDS / IPS': 1.1,
-        'Secure Gateways': 1,
-      },
-      'Endpoint Security': 1.2,
-      'Application Security': 1,
-      'Cloud Security': 1.1,
-    },
-    'Identity & Access Management (IAM)': {
-      'Identity Governance': 1,
-      'Privileged Access Management': 1,
-    },
-    'Data Security': {
-      Encryption: 1.1,
-      'Data Loss Prevention (DLP)': 1,
-      'Data Masking': 0.9,
-    },
-    'OT / ICS / SCADA Security': 1.1,
-    'Threat Intelligence & Monitoring': {
-      SIEM: 1,
-    },
-    'SOC Platforms': 1,
-    'Zero Trust Security': 1,
-    'Integrated Security Platforms': {
-      'PSIM (Physical Security Information Management) Platforms': 1,
-      'Unified PSIM + SIEM Command & Control Platforms': 1,
-      'Digital Twin-based Risk Management Platforms': 0.9,
-      'AI-driven Threat Detection & Analytics Platforms': 1.1,
-      'Multi-layer Security Orchestration Platforms': 1,
-    },
-    Services: {
-      'Professional Services': {
-        'Consulting & Risk Assessment': 1,
-        'System Integration': 1.1,
-        'Deployment & Installation': 1,
-        'Training & Support': 0.9,
-      },
-      'Managed Security Services': 1.1,
-      'Maintenance & Upgrades': 0.95,
-    },
+  'By Actuation Technology': {
+    'Electromechanical Park Lock Actuators': 1.1,
+    'Electrohydraulic Park Lock Actuators': 1,
   },
-  'By Operation Stage': {
-    'Upstream (Exploration & Production)': {
-      'Onshore Field Security': 1.1,
-      'Offshore Rig Security': 1,
-      'Seismic & Exploration Data Security': 0.9,
-      'Remote Asset Monitoring': 1,
-    },
-    'Midstream (Transport & Storage)': {
-      'Pipeline Security': {
-        'Leak Detection': 1,
-        'Intrusion Detection': 1,
-      },
-      'Storage Terminal Security': 1,
-      'LNG Transportation Security': 0.9,
-      'Remote Monitoring Systems': 1,
-    },
-    'Downstream (Refining & Distribution)': {
-      'Refinery Security': 1.1,
-      'Petrochemical Plant Security': 1,
-      'Distribution Network Security': 1,
-      'Retail Fuel Station Security': 0.9,
-    },
+  'By Motion Output Type': {
+    'Rotary Output Park Lock Actuators': 1.05,
+    'Linear Output Park Lock Actuators': 1,
   },
-  'By Deployment Mode': {
-    'On-Premise': 1.15,
-    'Cloud-Based': 1.1,
-    'Hybrid / Edge': 1,
+  'By Transmission and Driveline Application': {
+    'Torque Converter Automatic Transmission Park Lock Actuators': 1.15,
+    'Dual-Clutch Transmission Park Lock Actuators': 1.1,
+    'Electric Drive Unit and E-Axle Park Lock Actuators': 1.25,
+    'Automated Manual Transmission Park Lock Actuators': 0.95,
+    'Others (Dedicated Hybrid Transmission Park Lock Actuators, Continuously Variable Transmission Park Lock Actuators, etc.)': 0.9,
   },
-  'By End User': {
-    'Oil & Gas Operators (NOCs & IOCs)': 1.25,
-    'Pipeline Operators': 1,
-    'Drilling Contractors': 0.95,
-    'Refining & Petrochemical Companies': 1.1,
-    'LNG & Storage Operators': 0.9,
+  'By Vehicle Type': {
+    'Passenger Cars': 1.2,
+    'Commercial Vehicles': {
+      'Light Commercial Vehicles': 1,
+      'Medium and Heavy Commercial Vehicles': 1.15,
+    },
+    'Off-Highway Vehicles': 0.85,
+  },
+  'By Sales Channel': {
+    'OEM Fitment': 1.2,
+    'Aftermarket Replacement': 1,
   },
 };
 

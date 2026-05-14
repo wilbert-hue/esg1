@@ -54,6 +54,54 @@ export function padRow(row: (string | number)[], len: number): string[] {
   return out
 }
 
+/** Known template typos in CMI workbooks — replace for display/export only. */
+const HEADER_ROW1_REPLACEMENTS: [RegExp, string][] = [
+  [/Sports Management Software Buying Drivers/gi, 'Strategic buying drivers'],
+]
+
+export function sanitizeMislabeledGroupHeaders(proposition: CmiProposition): CmiProposition {
+  const headerRow1 = proposition.headerRow1.map((cell) => {
+    let s = String(cell ?? '')
+    for (const [re, rep] of HEADER_ROW1_REPLACEMENTS) {
+      s = s.replace(re, rep)
+    }
+    return s
+  })
+  const unchanged = headerRow1.every((c, i) => c === String(proposition.headerRow1[i] ?? ''))
+  return unchanged ? proposition : { ...proposition, headerRow1 }
+}
+
+/**
+ * Drop trailing columns where Excel padded the row length (empty level-1 & level-2 headers and no cell data).
+ * Keeps columns that only have row-2 text (merged row-1 pattern) or any non-empty data.
+ */
+export function trimTrailingEmptyColumns(proposition: CmiProposition): CmiProposition {
+  const { headerRow1, headerRow2, dataRows } = proposition
+  const prevMax = Math.max(
+    headerRow1.length,
+    headerRow2.length,
+    ...dataRows.map((r) => r.length),
+    0
+  )
+  let maxLen = prevMax
+  while (maxLen > 0) {
+    const i = maxLen - 1
+    const top = normCell(headerRow1[i])
+    const sub = normCell(headerRow2[i])
+    const colEmpty = dataRows.every((row) => normCell(row[i]) === '')
+    if (top || sub || !colEmpty) break
+    maxLen--
+  }
+  if (maxLen === prevMax) return proposition
+  const slice = <T,>(row: T[], len: number): T[] => row.slice(0, len)
+  return {
+    ...proposition,
+    headerRow1: slice(headerRow1, maxLen),
+    headerRow2: slice(headerRow2, maxLen),
+    dataRows: dataRows.map((r) => slice([...r], maxLen) as (string | number)[]),
+  }
+}
+
 /**
  * Remove a level-1 column group (e.g. "Professional Drivers") and its sub-columns.
  * Used for Proposition 1 — Basic to show only Customer Information + Contact Details.

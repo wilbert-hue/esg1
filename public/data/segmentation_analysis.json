@@ -1,109 +1,31 @@
 {
   "Global": {
-    "By Offering": {
-      "Physical Security": {
-        "Video Surveillance Systems": {
-          "Fixed Cameras": {},
-          "PTZ Cameras": {},
-          "Thermal / Infrared Cameras": {},
-          "Drone-based Surveillance": {}
-        },
-        "Access Control Systems": {
-          "Biometric Systems": {},
-          "Card / RFID-based Systems": {}
-        },
-        "Multi-factor Authentication Systems": {},
-        "Perimeter & Intrusion Detection": {
-          "Fence-mounted Sensors": {},
-          "Fiber-optic Detection Systems": {},
-          "Motion Sensors": {},
-          "Ground Radar Systems": {}
-        },
-        "Screening & Detection Systems": {
-          "Explosive Detection": {},
-          "Gas Leak Detection": {},
-          "Radiation Detection": {}
-        },
-        "Command & Control (PSIM)": {},
-        "Maritime & Offshore Security Systems": {}
-      },
-      "Cybersecurity (IT & OT)": {
-        "Network Security": {
-          "Firewalls": {},
-          "IDS / IPS": {},
-          "Secure Gateways": {}
-        },
-        "Endpoint Security": {},
-        "Application Security": {},
-        "Cloud Security": {}
-      },
-      "Identity & Access Management (IAM)": {
-        "Identity Governance": {},
-        "Privileged Access Management": {}
-      },
-      "Data Security": {
-        "Encryption": {},
-        "Data Loss Prevention (DLP)": {},
-        "Data Masking": {}
-      },
-      "OT / ICS / SCADA Security": {},
-      "Threat Intelligence & Monitoring": {
-        "SIEM": {}
-      },
-      "SOC Platforms": {},
-      "Zero Trust Security": {},
-      "Integrated Security Platforms": {
-        "PSIM (Physical Security Information Management) Platforms": {},
-        "Unified PSIM + SIEM Command & Control Platforms": {},
-        "Digital Twin-based Risk Management Platforms": {},
-        "AI-driven Threat Detection & Analytics Platforms": {},
-        "Multi-layer Security Orchestration Platforms": {}
-      },
-      "Services": {
-        "Professional Services": {
-          "Consulting & Risk Assessment": {},
-          "System Integration": {},
-          "Deployment & Installation": {},
-          "Training & Support": {}
-        },
-        "Managed Security Services": {},
-        "Maintenance & Upgrades": {}
-      }
+    "By Actuation Technology": {
+      "Electromechanical Park Lock Actuators": {},
+      "Electrohydraulic Park Lock Actuators": {}
     },
-    "By Operation Stage": {
-      "Upstream (Exploration & Production)": {
-        "Onshore Field Security": {},
-        "Offshore Rig Security": {},
-        "Seismic & Exploration Data Security": {},
-        "Remote Asset Monitoring": {}
-      },
-      "Midstream (Transport & Storage)": {
-        "Pipeline Security": {
-          "Leak Detection": {},
-          "Intrusion Detection": {}
-        },
-        "Storage Terminal Security": {},
-        "LNG Transportation Security": {},
-        "Remote Monitoring Systems": {}
-      },
-      "Downstream (Refining & Distribution)": {
-        "Refinery Security": {},
-        "Petrochemical Plant Security": {},
-        "Distribution Network Security": {},
-        "Retail Fuel Station Security": {}
-      }
+    "By Motion Output Type": {
+      "Rotary Output Park Lock Actuators": {},
+      "Linear Output Park Lock Actuators": {}
     },
-    "By Deployment Mode": {
-      "On-Premise": {},
-      "Cloud-Based": {},
-      "Hybrid / Edge": {}
+    "By Transmission and Driveline Application": {
+      "Torque Converter Automatic Transmission Park Lock Actuators": {},
+      "Dual-Clutch Transmission Park Lock Actuators": {},
+      "Electric Drive Unit and E-Axle Park Lock Actuators": {},
+      "Automated Manual Transmission Park Lock Actuators": {},
+      "Others (Dedicated Hybrid Transmission Park Lock Actuators, Continuously Variable Transmission Park Lock Actuators, etc.)": {}
     },
-    "By End User": {
-      "Oil & Gas Operators (NOCs & IOCs)": {},
-      "Pipeline Operators": {},
-      "Drilling Contractors": {},
-      "Refining & Petrochemical Companies": {},
-      "LNG & Storage Operators": {}
+    "By Vehicle Type": {
+      "Passenger Cars": {},
+      "Commercial Vehicles": {
+        "Light Commercial Vehicles": {},
+        "Medium and Heavy Commercial Vehicles": {}
+      },
+      "Off-Highway Vehicles": {}
+    },
+    "By Sales Channel": {
+      "OEM Fitment": {},
+      "Aftermarket Replacement": {}
     },
     "By Region": {
       "North America": {

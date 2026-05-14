@@ -1472,7 +1472,7 @@ export async function processJsonDataAsync(
     
     // Build metadata
     const metadata: Metadata = {
-      market_name: 'Oil and Gas Security Market',
+      market_name: 'Park Lock Actuators Market',
       market_type: 'Market Analysis',
       industry: 'Oil & Gas Security',
       years: allYears,

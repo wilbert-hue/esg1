@@ -1,13 +1,14 @@
 {
-  "source": "Sample Framework_Customer Database_Global Oil And Gas Security Market_CMI.xlsx",
+  "source": "Copy of Sample Framework Customer Database_Global Park Lock Actuators Market_CMI.xlsx",
   "propositions": [
     {
       "id": 1,
       "sheetName": "Proposition 1 - Basic",
-      "title": "Global Oil And Gas Security Market  - Customer Database\r\nVerified directory and insight on customers",
+      "title": "Global Park Lock Actuators Market- Customer Database\r\nVerified directory and insight on customers  (Passenger Vehicle OEMs, Electric Vehicle OEMs, Hybrid Vehicle OEMs , Commercial Vehicle OEMs, Transmission Manufacturers, E-Axle And EV Drivetrain Suppliers, Tier-1 Powertrain System Suppliers, etc.)",
       "headerRow1": [
         "S.No.",
         "Customer Information",
+        "",
         "",
         "",
         "",
@@ -17,27 +18,22 @@
         "",
         "",
         "",
-        "",
-        "Professional Drivers",
-        "",
         ""
       ],
       "headerRow2": [
         "",
-        "Customer Name/Company Name",
-        "Business Overview\r\n",
-        "Industry Vertical\r\n(Energy & Utilities, Government & Public Sector, Industrial Manufacturing, Transportation & Logistics, Critical Infrastructure Operations)",
-        "Total Annual Revenue (US$ Million)",
-        "Customer Size / Scale\r\n(Global integrated oil company, national oil company (NOC), regional pipeline operator, refinery group, LNG terminal operator, government-owned energy authority)",
+        "Customer Name / Company Name",
+        "Business Overview",
+        "Customer Type",
+        "Vehicle / Drivetrain Platform Focus",
+        "Country / Region",
+        "Customer Size / Scale",
         "Key Contact Person",
-        "Designation/Role",
+        "Designation / Role",
         "Email Address",
-        "Phone/WhatsApp Number",
+        "Phone / WhatsApp Number",
         "LinkedIn Profile",
-        "Website URL",
-        "Key Buying Criteria\r\n(Spectral resolution (number of bands, wavelength accuracy)/Spatial resolution + frame rate (especially for snapshot systems like Living Optics)/Real-time processing capability/Size, weight, and power (SWaP optimization)/Integration capability (SDKs, APIs, AI pipelines)/Calibration accuracy & stability/Application-specific tuning (VNIR / SWIR / LWIR)/Reliability in harsh environments (defense, industrial)/Vendor technical support & customization capability)",
-        "Key Pain Points\r\n(High cost of hyperspectral systems/Trade-off between spectral vs spatial resolution/Large data volumes - processing/storage challenges/Integration complexity with existing vision systems/Limited real-time performance (for traditional pushbroom systems)/Calibration drift and maintenance issues/Lack of skilled personnel for spectral data interpretation/Power consumption constraints (especially UAV/drone use)/Fragmented vendor ecosystem)",
-        "Upcoming Triggers and Initiatives\r\n(Adoption of AI/ML for spectral data analytics/Growth in precision agriculture (crop monitoring, soil analysis)/Expansion of defense ISR (Intelligence, Surveillance, Reconnaissance)/Increased use in autonomous vehicles & robotics/Industrial shift toward automated quality inspection/Miniaturization of hyperspectral cameras (key for Living Optics)/Growth in space-based earth observation/Environmental monitoring & climate initiatives/Medical diagnostics innovation (non-invasive imaging))"
+        "Website URL"
       ],
       "dataRows": [
         [
@@ -53,9 +49,7 @@
           "xx",
           "xx",
           "xx",
-          "",
-          "",
-          ""
+          "xx"
         ],
         [
           2,
@@ -70,9 +64,7 @@
           "xx",
           "xx",
           "xx",
-          "",
-          "",
-          ""
+          "xx"
         ],
         [
           3,
@@ -87,9 +79,7 @@
           "xx",
           "xx",
           "xx",
-          "",
-          "",
-          ""
+          "xx"
         ],
         [
           4,
@@ -104,9 +94,7 @@
           "xx",
           "xx",
           "xx",
-          "",
-          "",
-          ""
+          "xx"
         ],
         [
           5,
@@ -121,9 +109,7 @@
           "xx",
           "xx",
           "xx",
-          "",
-          "",
-          ""
+          "xx"
         ],
         [
           6,
@@ -138,9 +124,7 @@
           "xx",
           "xx",
           "xx",
-          "",
-          "",
-          ""
+          "xx"
         ],
         [
           7,
@@ -155,9 +139,7 @@
           "xx",
           "xx",
           "xx",
-          "",
-          "",
-          ""
+          "xx"
         ],
         [
           8,
@@ -172,9 +154,7 @@
           "xx",
           "xx",
           "xx",
-          "",
-          "",
-          ""
+          "xx"
         ],
         [
           9,
@@ -189,9 +169,7 @@
           "xx",
           "xx",
           "xx",
-          "",
-          "",
-          ""
+          "xx"
         ],
         [
           10,
@@ -206,9 +184,7 @@
           "xx",
           "xx",
           "xx",
-          "",
-          "",
-          ""
+          "xx"
         ],
         [
           11,
@@ -223,9 +199,7 @@
           "xx",
           "xx",
           "xx",
-          "",
-          "",
-          ""
+          "xx"
         ],
         [
           12,
@@ -240,9 +214,7 @@
           "xx",
           "xx",
           "xx",
-          "",
-          "",
-          ""
+          "xx"
         ],
         [
           13,
@@ -257,9 +229,7 @@
           "xx",
           "xx",
           "xx",
-          "",
-          "",
-          ""
+          "xx"
         ],
         [
           14,
@@ -274,9 +244,7 @@
           "xx",
           "xx",
           "xx",
-          "",
-          "",
-          ""
+          "xx"
         ],
         [
           15,
@@ -291,19 +259,18 @@
           "xx",
           "xx",
           "xx",
-          "",
-          "",
-          ""
+          "xx"
         ]
       ]
     },
     {
       "id": 2,
       "sheetName": "Proposition 2 - Advance",
-      "title": "Global Oil And Gas Security Market  -  Customer Database\r\nVerified directory and insight on customers",
+      "title": "Global Park Lock Actuators Market- Customer Database\r\nVerified directory and insight on customers  (Passenger Vehicle OEMs, Electric Vehicle OEMs, Hybrid Vehicle OEMs , Commercial Vehicle OEMs, Transmission Manufacturers, E-Axle And EV Drivetrain Suppliers, Tier-1 Powertrain System Suppliers, etc.)",
       "headerRow1": [
         "S.No.",
         "Customer Information",
+        "",
         "",
         "",
         "",
@@ -314,31 +281,48 @@
         "",
         "",
         "",
-        "Professional Drivers",
+        "Strategic buying drivers",
+        "",
+        "",
+        "",
+        "Purchasing Behaviour Metrics",
+        "",
         "",
         ""
       ],
       "headerRow2": [
         "",
-        "Customer Name/Company Name",
-        "Business Overview\r\n",
-        "Industry Vertical\r\n(Energy & Utilities, Government & Public Sector, Industrial Manufacturing, Transportation & Logistics, Critical Infrastructure Operations)",
-        "Total Annual Revenue (US$ Million)",
-        "Customer Size / Scale\r\n(Global integrated oil company, national oil company (NOC), regional pipeline operator, refinery group, LNG terminal operator, government-owned energy authority)",
+        "Customer Name / Company Name",
+        "Business Overview",
+        "Customer Type",
+        "Vehicle / Drivetrain Platform Focus",
+        "Country / Region",
+        "Customer Size / Scale",
         "Key Contact Person",
-        "Designation/Role",
+        "Designation / Role",
         "Email Address",
-        "Phone/WhatsApp Number",
+        "Phone / WhatsApp Number",
         "LinkedIn Profile",
         "Website URL",
-        "Key Buying Criteria\r\n(OT/ICS security capability, SCADA integration support, real-time threat monitoring, AI-driven anomaly detection, perimeter intrusion accuracy, PSIM interoperability, harsh-environment reliability, remote asset visibility, low-latency incident response, cybersecurity compliance readiness, cloud-edge hybrid integration, centralized command capability)",
-        "Key Pain Points\r\n(Increasing ransomware attacks, legacy SCADA vulnerabilities, fragmented physical and cyber security systems, high infrastructure protection costs, remote asset monitoring challenges, insider threat risks, delayed incident detection, multi-site governance complexity, compliance burden for critical infrastructure regulations, shortage of OT cybersecurity expertise)",
-        "Upcoming Triggers and Initiatives\r\n(Expansion of LNG infrastructure, AI-enabled threat intelligence deployment, remote unmanned oilfield monitoring, industrial digital transformation, cloud-enabled energy operations, pipeline modernization projects, cybersecurity regulatory mandates, drone surveillance adoption, integrated SOC modernization, zero-trust OT security initiatives)"
+        "Key Buying Criteria",
+        "Core Drivetrain / Parking Safety Pain Points",
+        "Preferred Park Lock Actuator Type",
+        "Key Buying Triggers",
+        "Budget Ownership",
+        "Procurement Model",
+        "Vendor Selection Criteria",
+        "Preferred Engagement Type"
       ],
       "dataRows": [
         [
           1,
           "Customer 1",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
           "xx",
           "xx",
           "xx",
@@ -368,11 +352,23 @@
           "xx",
           "xx",
           "xx",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
           "xx"
         ],
         [
           3,
           "Customer 3",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
           "xx",
           "xx",
           "xx",
@@ -402,11 +398,23 @@
           "xx",
           "xx",
           "xx",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
           "xx"
         ],
         [
           5,
           "Customer 5",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
           "xx",
           "xx",
           "xx",
@@ -436,11 +444,23 @@
           "xx",
           "xx",
           "xx",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
           "xx"
         ],
         [
           7,
           "Customer 7",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
           "xx",
           "xx",
           "xx",
@@ -470,11 +490,23 @@
           "xx",
           "xx",
           "xx",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
           "xx"
         ],
         [
           9,
           "Customer 9",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
           "xx",
           "xx",
           "xx",
@@ -504,11 +536,23 @@
           "xx",
           "xx",
           "xx",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
           "xx"
         ],
         [
           11,
           "Customer 11",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
           "xx",
           "xx",
           "xx",
@@ -538,11 +582,23 @@
           "xx",
           "xx",
           "xx",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
           "xx"
         ],
         [
           13,
           "Customer 13",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
           "xx",
           "xx",
           "xx",
@@ -572,11 +628,23 @@
           "xx",
           "xx",
           "xx",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
           "xx"
         ],
         [
           15,
           "Customer N",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
+          "xx",
           "xx",
           "xx",
           "xx",
@@ -596,10 +664,11 @@
     {
       "id": 3,
       "sheetName": "Proposition 3 - Premium",
-      "title": "Global Oil And Gas Security Market - Customer Database\r\nVerified directory and insight on customers",
+      "title": "Global Park Lock Actuators Market- Customer Database\r\nVerified directory and insight on customers  (Passenger Vehicle OEMs, Electric Vehicle OEMs, Hybrid Vehicle OEMs , Commercial Vehicle OEMs, Transmission Manufacturers, E-Axle And EV Drivetrain Suppliers, Tier-1 Powertrain System Suppliers, etc.)",
       "headerRow1": [
         "S.No.",
         "Customer Information",
+        "",
         "",
         "",
         "",
@@ -610,47 +679,55 @@
         "",
         "",
         "",
-        "Professional Drivers",
+        "Strategic buying drivers",
+        "",
         "",
         "",
         "Purchasing Behaviour Metrics",
         "",
         "",
+        "",
         "Solution Requirements",
         "",
         "",
-        "CMI Insights",
-        ""
+        "",
+        "CMI Insights on Customer Benchmarking Summary (Potential Customers)"
       ],
       "headerRow2": [
         "",
-        "Customer Name/Company Name",
-        "Business Overview\r\n",
-        "Industry Vertical\r\n(Energy & Utilities, Government & Public Sector, Industrial Manufacturing, Transportation & Logistics, Critical Infrastructure Operations)",
-        "Total Annual Revenue (US$ Million)",
-        "Customer Size / Scale\r\n(Global integrated oil company, national oil company (NOC), regional pipeline operator, refinery group, LNG terminal operator, government-owned energy authority)",
+        "Customer Name / Company Name",
+        "Business Overview",
+        "Customer Type",
+        "Vehicle / Drivetrain Platform Focus",
+        "Country / Region",
+        "Customer Size / Scale",
         "Key Contact Person",
-        "Designation/Role",
+        "Designation / Role",
         "Email Address",
-        "Phone/WhatsApp Number",
+        "Phone / WhatsApp Number",
         "LinkedIn Profile",
         "Website URL",
-        "Key Buying Criteria\r\n(OT/ICS security capability, SCADA integration support, real-time threat monitoring, AI-driven anomaly detection, perimeter intrusion accuracy, PSIM interoperability, harsh-environment reliability, remote asset visibility, low-latency incident response, cybersecurity compliance readiness, cloud-edge hybrid integration, centralized command capability)",
-        "Key Pain Points\r\n(Increasing ransomware attacks, legacy SCADA vulnerabilities, fragmented physical and cyber security systems, high infrastructure protection costs, remote asset monitoring challenges, insider threat risks, delayed incident detection, multi-site governance complexity, compliance burden for critical infrastructure regulations, shortage of OT cybersecurity expertise)",
-        "Upcoming Triggers and Initiatives\r\n(Expansion of LNG infrastructure, AI-enabled threat intelligence deployment, remote unmanned oilfield monitoring, industrial digital transformation, cloud-enabled energy operations, pipeline modernization projects, cybersecurity regulatory mandates, drone surveillance adoption, integrated SOC modernization, zero-trust OT security initiatives)",
-        "Budget Ownership \r\n(Chief Security Officer, CIO, CISO, VP Operations, OT Security Department, Infrastructure Protection Team, Risk & Compliance Office, Procurement Department)",
-        "Procurement Model\r\n(Direct OEM procurement, EPC-led deployment projects, managed security service contracts, long-term infrastructure security agreements, government energy security tenders, industrial system integrator deployment)",
-        "Preferred Engagement Type\r\n(Pilot infrastructure assessments, proof-of-concept deployments, multi-site rollout programs, managed SOC services, long-term maintenance contracts, OT cybersecurity consulting partnerships)",
-        "Preferred Solution Type\r\n(Video surveillance systems, thermal imaging systems, drone surveillance platforms, perimeter intrusion detection systems, OT/ICS cybersecurity platforms, SIEM solutions, PSIM platforms, AI-based threat analytics, access control systems, pipeline leak detection systems)",
-        "Preferred Deployment Model\r\n(On-premise deployment, hybrid cloud-edge security architecture, edge-based surveillance processing, private industrial cloud infrastructure, secure SOC deployment environments)",
-        "Performance Expectations\r\n(Real-time threat visibility, low false alarm rates, high uptime reliability, fast incident response capability, ruggedized field performance, secure encrypted communications, scalable multi-site monitoring, seamless SCADA integration, AI-enabled predictive threat detection)",
-        "Customer Benchmarking Summary (Potential Customers)",
-        "Additional Comments/Notes By CMI team"
+        "Key Buying Criteria",
+        "Core Drivetrain / Parking Safety Pain Points",
+        "Preferred Park Lock Actuator Type",
+        "Key Buying Triggers",
+        "Budget Ownership",
+        "Procurement Model",
+        "Vendor Selection Criteria",
+        "Preferred Engagement Type",
+        "Preferred Solution Type",
+        "Actuator Specification Requirement",
+        "Integration / Validation Requirement",
+        "Performance Expectations",
+        "Customer Benchmarking Summary"
       ],
       "dataRows": [
         [
           1,
           "Customer 1",
+          "xx",
+          "xx",
+          "xx",
           "xx",
           "xx",
           "xx",
@@ -696,11 +773,17 @@
           "xx",
           "xx",
           "xx",
+          "xx",
+          "xx",
+          "xx",
           "xx"
         ],
         [
           3,
           "Customer 3",
+          "xx",
+          "xx",
+          "xx",
           "xx",
           "xx",
           "xx",
@@ -746,11 +829,17 @@
           "xx",
           "xx",
           "xx",
+          "xx",
+          "xx",
+          "xx",
           "xx"
         ],
         [
           5,
           "Customer 5",
+          "xx",
+          "xx",
+          "xx",
           "xx",
           "xx",
           "xx",
@@ -796,11 +885,17 @@
           "xx",
           "xx",
           "xx",
+          "xx",
+          "xx",
+          "xx",
           "xx"
         ],
         [
           7,
           "Customer 7",
+          "xx",
+          "xx",
+          "xx",
           "xx",
           "xx",
           "xx",
@@ -846,11 +941,17 @@
           "xx",
           "xx",
           "xx",
+          "xx",
+          "xx",
+          "xx",
           "xx"
         ],
         [
           9,
           "Customer 9",
+          "xx",
+          "xx",
+          "xx",
           "xx",
           "xx",
           "xx",
@@ -896,11 +997,17 @@
           "xx",
           "xx",
           "xx",
+          "xx",
+          "xx",
+          "xx",
           "xx"
         ],
         [
           11,
           "Customer 11",
+          "xx",
+          "xx",
+          "xx",
           "xx",
           "xx",
           "xx",
@@ -946,11 +1053,17 @@
           "xx",
           "xx",
           "xx",
+          "xx",
+          "xx",
+          "xx",
           "xx"
         ],
         [
           13,
           "Customer 13",
+          "xx",
+          "xx",
+          "xx",
           "xx",
           "xx",
           "xx",
@@ -996,11 +1109,17 @@
           "xx",
           "xx",
           "xx",
+          "xx",
+          "xx",
+          "xx",
           "xx"
         ],
         [
           15,
           "Customer N",
+          "xx",
+          "xx",
+          "xx",
           "xx",
           "xx",
           "xx",
