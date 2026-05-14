@@ -7,7 +7,8 @@ import { FilterState } from '@/lib/types'
 import { 
   createTopMarketFilters, 
   createGrowthLeadersFilters, 
-  createEmergingMarketsFilters 
+  createEmergingMarketsFilters,
+  createFullComparisonFilters,
 } from '@/lib/preset-utils'
 
 interface FilterPreset {
@@ -36,6 +37,8 @@ export function FilterPresets() {
     const growthLeadersFilters = createGrowthLeadersFilters(data)
     const emergingMarketsFilters = createEmergingMarketsFilters(data)
 
+    const fullComparisonFilters = createFullComparisonFilters(data)
+
     return [
   {
     id: 'top-markets',
@@ -63,11 +66,7 @@ export function FilterPresets() {
     name: 'Full Comparison',
     description: 'All regions and segments matrix view',
     icon: <BarChart3 className="h-4 w-4" />,
-    filters: {
-      viewMode: 'matrix',
-      yearRange: [2023, 2027],
-      dataType: 'value',
-    }
+        filters: fullComparisonFilters
   },
 ]
   }, [data])

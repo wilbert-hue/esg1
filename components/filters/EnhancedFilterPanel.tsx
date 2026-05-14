@@ -18,7 +18,7 @@ interface SelectedSegmentItem {
 export function EnhancedFilterPanel() {
   const { data, filters, updateFilters } = useDashboardStore()
   const [selectedSegmentType, setSelectedSegmentType] = useState<string>(
-    filters.segmentType || (data?.dimensions?.segments ? Object.keys(data.dimensions.segments)[0] : 'By Technology')
+    filters.segmentType || (data?.dimensions?.segments ? Object.keys(data.dimensions.segments)[0] : 'By Offering')
   )
   const [selectedSegments, setSelectedSegments] = useState<SelectedSegmentItem[]>([])
   const [currentSegmentSelection, setCurrentSegmentSelection] = useState<string>('')
@@ -58,6 +58,30 @@ export function EnhancedFilterPanel() {
       setSelectedSegmentType(firstSegmentType)
     }
   }, [filters.segmentType, data])
+
+  // Keep segment type valid for the current data type (e.g. volume may omit some types).
+  // Prevents React <select> warnings and stray "Issue" overlays when the value is not in <option>s.
+  useEffect(() => {
+    if (!data) return
+    const allTypes = Object.keys(data.dimensions.segments)
+    let validTypes = allTypes
+    if (filters.dataType === 'volume') {
+      const volumeSegTypes = new Set(
+        data.data.volume.geography_segment_matrix.map((r) => r.segment_type)
+      )
+      const filtered = allTypes.filter((type) => volumeSegTypes.has(type))
+      validTypes = filtered.length > 0 ? filtered : allTypes
+    }
+    if (validTypes.length === 0) return
+    if (!validTypes.includes(filters.segmentType)) {
+      const next = validTypes[0]
+      updateFilters({
+        segmentType: next,
+        segments: [],
+        advancedSegments: [],
+      } as any)
+    }
+  }, [data, filters.dataType, filters.segmentType, updateFilters])
 
   // When switching data type (value/volume), keep the current segment type if it exists in both datasets
   // This allows seamless switching between value and volume data for the same segment types

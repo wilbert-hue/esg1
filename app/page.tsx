@@ -15,6 +15,7 @@ import { CompetitiveIntelligence } from '@/components/charts/CompetitiveIntellig
 import CustomerIntelligenceHeatmap from '@/components/charts/CustomerIntelligenceHeatmap'
 import DistributorsIntelligence from '@/components/charts/DistributorsIntelligenceTable'
 import CustomerIntelligenceDatabase from '@/components/charts/CustomerIntelligenceDatabase'
+import { CustomerIntelligencePropositions } from '@/components/charts/CustomerIntelligencePropositions'
 import { InsightsPanel } from '@/components/InsightsPanel'
 import { FilterPresets } from '@/components/filters/FilterPresets'
 import { ChartGroupSelector } from '@/components/filters/ChartGroupSelector'
@@ -31,7 +32,18 @@ export default function DashboardPage() {
   const { setData, setLoading, setError, data, isLoading, error, filters, selectedChartGroup, dashboardName } = useDashboardStore()
   const [mounted, setMounted] = useState(false)
   const [hasCheckedStore, setHasCheckedStore] = useState(false)
-  const [activeTab, setActiveTab] = useState<'bar' | 'line' | 'heatmap' | 'table' | 'waterfall' | 'bubble' | 'competitive-intelligence' | 'customer-intelligence' | 'customer-intelligence-database'>('bar')
+  const [activeTab, setActiveTab] = useState<
+    | 'bar'
+    | 'line'
+    | 'heatmap'
+    | 'table'
+    | 'waterfall'
+    | 'bubble'
+    | 'competitive-intelligence'
+    | 'customer-intelligence'
+    | 'customer-intelligence-database'
+    | 'cmi-propositions'
+  >('bar')
   const [showInsights, setShowInsights] = useState(false)
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [viewMode, setViewMode] = useState<'tabs' | 'vertical'>('tabs')
@@ -55,7 +67,8 @@ export default function DashboardPage() {
     'bubble': 'bubble',
     'competitive-intelligence': 'competitive-intelligence',
     'customer-intelligence': 'customer-intelligence',
-    'customer-intelligence-database': 'customer-intelligence-database'
+    'customer-intelligence-database': 'customer-intelligence-database',
+    'cmi-propositions': 'cmi-propositions',
   }
 
   // Auto-switch to first available tab when chart group changes
@@ -204,7 +217,7 @@ export default function DashboardPage() {
                 Coherent Dashboard
               </h1>
               <h2 className="text-sm text-black">
-                {dashboardName || 'Global Normothermic Machine Perfusion Market'}
+                {dashboardName || 'Global Oil and Gas Security Market'}
               </h2>
             </div>
           </div>
@@ -398,6 +411,18 @@ export default function DashboardPage() {
                             👤 Customer Intelligence
                           </button>
                         )}
+                        {isChartVisible('cmi-propositions') && (
+                          <button
+                            onClick={() => setActiveTab('cmi-propositions')}
+                            className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors ${
+                              activeTab === 'cmi-propositions'
+                                ? 'border-blue-500 text-blue-600'
+                                : 'border-transparent text-black hover:text-black hover:border-gray-300'
+                            }`}
+                          >
+                            📑 Customer Intelligence
+                          </button>
+                        )}
                       </>
                     )}
                   </nav>
@@ -513,6 +538,12 @@ export default function DashboardPage() {
                         />
                       </div>
                     )}
+
+                    {activeTab === 'cmi-propositions' && (
+                      <div id="cmi-propositions">
+                        <CustomerIntelligencePropositions title="Customer Intelligence — CMI framework" />
+                      </div>
+                    )}
                   </>
                 ) : (
                   <div className="space-y-8">
@@ -610,6 +641,13 @@ export default function DashboardPage() {
                           title="Customer Intelligence Database"
                           height={600}
                         />
+                      </div>
+                    )}
+
+                    {isChartVisible('cmi-propositions') && (
+                      <div className="border-b pb-8">
+                        <h3 className="text-lg font-semibold text-black mb-4">📑 Customer Intelligence</h3>
+                        <CustomerIntelligencePropositions title="Customer Intelligence — CMI framework" />
                       </div>
                     )}
                   </div>

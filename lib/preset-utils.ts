@@ -5,6 +5,21 @@
 
 import type { ComparisonData, DataRecord, FilterState } from './types'
 
+/** All geography names that are countries (or modeled country-level rows), not parent regions. */
+function getCountryGeographiesSet(data: ComparisonData | null): Set<string> | null {
+  const countriesMap = data?.dimensions?.geographies?.countries
+  if (!countriesMap || typeof countriesMap !== 'object') return null
+  const out = new Set<string>()
+  for (const list of Object.values(countriesMap)) {
+    if (Array.isArray(list)) {
+      list.forEach((name) => {
+        if (name && typeof name === 'string') out.add(name)
+      })
+    }
+  }
+  return out.size > 0 ? out : null
+}
+
 /**
  * Calculate top regions based on market value for a specific year
  * @param data - The comparison data
@@ -12,10 +27,20 @@ import type { ComparisonData, DataRecord, FilterState } from './types'
  * @param topN - Number of top regions to return (default 3)
  * @returns Array of top region names
  */
+/**
+ * Prefer "By Offering" when present so Quick Filters align with primary taxonomy.
+ */
+export function preferredSegmentType(data: ComparisonData | null): string | null {
+  if (!data?.dimensions?.segments) return null
+  if (data.dimensions.segments['By Offering']) return 'By Offering'
+  return getFirstSegmentType(data)
+}
+
 export function getTopRegionsByMarketValue(
   data: ComparisonData | null,
   year: number = 2023,
-  topN: number = 3
+  topN: number = 3,
+  segmentType?: string | null
 ): string[] {
   if (!data) return []
 
@@ -32,6 +57,12 @@ export function getTopRegionsByMarketValue(
 
     // Skip global level
     if (geography === 'Global') return
+
+    // When segmentType is set, only sum that dimension (avoids 4× from multiple segment types)
+    if (segmentType && record.segment_type !== segmentType) return
+
+    // Leaf rows only — avoids counting the same geography many times across hierarchy levels
+    if (record.segment_level !== 'leaf') return
 
     // Treat all geographies as single entities - aggregate by name
     const currentTotal = geographyTotals.get(geography) || 0
@@ -106,7 +137,8 @@ export function getFirstSegmentType(data: ComparisonData | null): string | null 
  */
 export function getTopRegionsByCAGR(
   data: ComparisonData | null,
-  topN: number = 2
+  topN: number = 2,
+  segmentType?: string | null
 ): string[] {
   if (!data) return []
 
@@ -122,6 +154,9 @@ export function getTopRegionsByCAGR(
 
     // Skip global level
     if (geography === 'Global') return
+
+    if (segmentType && record.segment_type !== segmentType) return
+    if (record.segment_level !== 'leaf') return
 
     // Treat all geographies as single entities - aggregate by name
     if (record.cagr !== undefined && record.cagr !== null) {
@@ -154,12 +189,14 @@ export function getTopRegionsByCAGR(
  */
 export function getTopCountriesByCAGR(
   data: ComparisonData | null,
-  topN: number = 5
+  topN: number = 5,
+  segmentType?: string | null
 ): string[] {
   if (!data) return []
 
   // Get all value data records
   const records = data.data.value.geography_segment_matrix
+  const countrySet = getCountryGeographiesSet(data)
 
   // Calculate average CAGR for each geography
   // Treat all geographies as single entities - aggregate by name
@@ -170,6 +207,12 @@ export function getTopCountriesByCAGR(
 
     // Skip global level
     if (geography === 'Global') return
+
+    // Only country-level rows from dimension (excludes regions like "Asia Pacific")
+    if (countrySet && !countrySet.has(geography)) return
+
+    if (segmentType && record.segment_type !== segmentType) return
+    if (record.segment_level !== 'leaf') return
 
     // Treat all geographies as single entities - aggregate by name
     if (record.cagr !== undefined && record.cagr !== null) {
@@ -200,19 +243,31 @@ export function getTopCountriesByCAGR(
  * @returns Partial FilterState with dynamic values
  */
 export function createTopMarketFilters(data: ComparisonData | null): Partial<FilterState> {
-  const topRegions = getTopRegionsByMarketValue(data, 2023, 3)
-  const firstSegmentType = getFirstSegmentType(data)
-  const firstLevelSegments = firstSegmentType
-    ? getFirstLevelSegments(data, firstSegmentType)
-    : []
+  const segmentType = preferredSegmentType(data)
+  const topRegions = getTopRegionsByMarketValue(data, 2023, 3, segmentType)
+  const firstLevelSegments = segmentType ? getFirstLevelSegments(data, segmentType) : []
 
   return {
     viewMode: 'geography-mode', // Geography on X-axis, segments as series
     geographies: topRegions,
     segments: firstLevelSegments,
-    segmentType: firstSegmentType || 'By Technology',
+    segmentType: segmentType || 'By Offering',
     yearRange: [2023, 2027],
-    dataType: 'value'
+    dataType: 'value',
+    aggregationLevel: null,
+  }
+}
+
+export function createFullComparisonFilters(data: ComparisonData | null): Partial<FilterState> {
+  const segmentType = preferredSegmentType(data)
+  return {
+    viewMode: 'matrix',
+    yearRange: [2023, 2027],
+    dataType: 'value',
+    segmentType: segmentType || 'By Offering',
+    segments: [],
+    geographies: [],
+    aggregationLevel: null,
   }
 }
 
@@ -224,23 +279,22 @@ export function createGrowthLeadersFilters(data: ComparisonData | null): Partial
   if (!data) return {
     viewMode: 'geography-mode',
     yearRange: [2025, 2031],
-    dataType: 'value'
+    dataType: 'value',
+    aggregationLevel: null,
   }
 
-  // Get top 2 regions with highest CAGR
-  const topRegions = getTopRegionsByCAGR(data, 2)
-  const firstSegmentType = getFirstSegmentType(data)
-  const firstLevelSegments = firstSegmentType
-    ? getFirstLevelSegments(data, firstSegmentType)
-    : []
+  const segmentType = preferredSegmentType(data)
+  const topRegions = getTopRegionsByCAGR(data, 2, segmentType)
+  const firstLevelSegments = segmentType ? getFirstLevelSegments(data, segmentType) : []
 
   return {
     viewMode: 'geography-mode', // Geography on X-axis, segments as series
     geographies: topRegions,
     segments: firstLevelSegments,
-    segmentType: firstSegmentType || 'By Technology',
+    segmentType: segmentType || 'By Offering',
     yearRange: [2025, 2031],
-    dataType: 'value'
+    dataType: 'value',
+    aggregationLevel: null,
   }
 }
 
@@ -252,22 +306,21 @@ export function createEmergingMarketsFilters(data: ComparisonData | null): Parti
   if (!data) return {
     viewMode: 'geography-mode',
     yearRange: [2025, 2031],
-    dataType: 'value'
+    dataType: 'value',
+    aggregationLevel: null,
   }
 
-  // Get top 5 countries with highest CAGR
-  const topCountries = getTopCountriesByCAGR(data, 5)
-  const firstSegmentType = getFirstSegmentType(data)
-  const firstLevelSegments = firstSegmentType
-    ? getFirstLevelSegments(data, firstSegmentType)
-    : []
+  const segmentType = preferredSegmentType(data)
+  const topCountries = getTopCountriesByCAGR(data, 5, segmentType)
+  const firstLevelSegments = segmentType ? getFirstLevelSegments(data, segmentType) : []
 
   return {
     viewMode: 'geography-mode', // Geography on X-axis, segments as series
     geographies: topCountries,
     segments: firstLevelSegments,
-    segmentType: firstSegmentType || 'By Technology',
+    segmentType: segmentType || 'By Offering',
     yearRange: [2025, 2031],
-    dataType: 'value'
+    dataType: 'value',
+    aggregationLevel: null,
   }
 }

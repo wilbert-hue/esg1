@@ -39,7 +39,9 @@ export function GroupedBarChart({ title, height = 400 }: GroupedBarChartProps) {
     const segmentsFromSameType = advancedSegments.filter(
       (seg: any) => seg.type === filters.segmentType
     )
-    const hasUserSelectedSegments = segmentsFromSameType.length > 0
+    const hasUserSelectedSegments =
+      segmentsFromSameType.length > 0 ||
+      !!(filters.segments && filters.segments.length > 0)
 
     // Determine effective aggregation level for BOTH filtering and chart preparation
     // When user selects a parent segment (like "Parenteral"), we want to show its children
@@ -64,7 +66,12 @@ export function GroupedBarChart({ title, height = 400 }: GroupedBarChartProps) {
       advancedSegments: advancedSegments.map((s: any) => ({ type: s.type, segment: s.segment })),
       filtersSegmentType: filters.segmentType,
       filtersAggregationLevel: filters.aggregationLevel,
-      willCallFunction: effectiveAggregationLevel !== null ? 'prepareGroupedBarData' : 'prepareIntelligentMultiLevelData'
+      willCallFunction:
+        (filters.viewMode === 'segment-mode' && filters.geographies.length > 1) ||
+        (filters.viewMode === 'geography-mode' && filters.segments.length > 1) ||
+        effectiveAggregationLevel !== null
+          ? 'prepareGroupedBarData'
+          : 'prepareIntelligentMultiLevelData',
     })
 
     // Create modified filters with the effective aggregation level
@@ -129,10 +136,17 @@ export function GroupedBarChart({ title, height = 400 }: GroupedBarChartProps) {
     const byRegionRecords = dataset.filter(r => r.segment_type === 'By Region')
     const geographyCountries = data.dimensions.geographies.countries
 
+    // Stacked layouts need prepareGroupedBarData (geo::segment keys). When many segments are
+    // selected (e.g. Quick Filters), aggregationLevel is null and we were incorrectly using
+    // prepareIntelligentMultiLevelData — it only keys by geography, so bars had no matching series.
+    const needsStackedBars =
+      (filters.viewMode === 'segment-mode' && filters.geographies.length > 1) ||
+      (filters.viewMode === 'geography-mode' && filters.segments.length > 1)
+
+    const usePrepareGroupedBarData = needsStackedBars || effectiveAggregationLevel !== null
+
     // Prepare chart data
-    // Use prepareGroupedBarData when we have an effective aggregation level (handles Level 2 aggregation)
-    // This ensures parent segments are shown instead of sub-segments when no segment is selected
-    const prepared = effectiveAggregationLevel !== null
+    const prepared = usePrepareGroupedBarData
       ? prepareGroupedBarData(filtered, modifiedFilters, byRegionRecords, geographyCountries)
       : prepareIntelligentMultiLevelData(filtered, modifiedFilters, byRegionRecords, geographyCountries)
 
@@ -151,16 +165,14 @@ export function GroupedBarChart({ title, height = 400 }: GroupedBarChartProps) {
       effectiveAggregationLevel,
       hasUserSelectedSegments,
       advancedSegments: filters.advancedSegments,
-      usingFunction: effectiveAggregationLevel !== null ? 'prepareGroupedBarData' : 'prepareIntelligentMultiLevelData'
+      usingFunction: usePrepareGroupedBarData ? 'prepareGroupedBarData' : 'prepareIntelligentMultiLevelData'
     })
 
     // Check if prepared data uses stacked keys (contains "::")
     const hasStackedKeys = [...allPreparedKeys].some(k => (k as string).includes('::'))
 
-    // Determine if we're using stacked bars
-    // Override: Don't stack if prepared data doesn't have stacked keys (e.g., Level 2 aggregation with Global fallback)
-    let isStacked = (filters.viewMode === 'segment-mode' && filters.geographies.length > 1) ||
-                      (filters.viewMode === 'geography-mode' && filters.segments.length > 1)
+    // Determine if we're using stacked bars (same rule as prepareGroupedBarData.needsStacking)
+    let isStacked = needsStackedBars
 
     // If all filtered records have the same geography (Global fallback) in segment mode,
     // disable stacking since we can't differentiate by geography
@@ -192,7 +204,35 @@ export function GroupedBarChart({ title, height = 400 }: GroupedBarChartProps) {
       return Array.from(allKeys)
     }
 
-    if (isStacked) {
+    const parseStackedKeysFromPrepared = (keys: string[]) => {
+      const primary = new Set<string>()
+      const secondary = new Set<string>()
+      keys.forEach((key) => {
+        if (!key.includes('::')) return
+        const [p, s] = key.split('::')
+        if (p && s) {
+          primary.add(p)
+          secondary.add(s)
+        }
+      })
+      return {
+        primary: Array.from(primary),
+        secondary: Array.from(secondary),
+      }
+    }
+
+    if (isStacked && hasStackedKeys) {
+      // Prepared data keys use each selected geography separately when both parent and child
+      // are selected (rollup only applies when the child is not in the selection).
+      series = extractSeriesFromPreparedData().filter((k) => k.includes('::'))
+      if (filters.viewMode === 'segment-mode') {
+        const { primary, secondary } = parseStackedKeysFromPrepared(series)
+        stackedSeries = { primary: primary, secondary: secondary }
+      } else if (filters.viewMode === 'geography-mode') {
+        const { primary, secondary } = parseStackedKeysFromPrepared(series)
+        stackedSeries = { primary, secondary }
+      }
+    } else if (isStacked) {
       // For stacked bars, we need to identify primary and secondary dimensions
       if (filters.viewMode === 'segment-mode') {
         // Primary: segments (bar groups), Secondary: geographies (stacks)

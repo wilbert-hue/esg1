@@ -40,7 +40,9 @@ export function MultiLineChart({ title, height = 400 }: MultiLineChartProps) {
       const segmentsFromSameType = advancedSegments.filter(
         (seg: any) => seg.type === filters.segmentType
       )
-      const hasSegmentsForCurrentType = segmentsFromSameType.length > 0
+      const hasSegmentsForCurrentType =
+        segmentsFromSameType.length > 0 ||
+        !!(filters.segments && filters.segments.length > 0)
 
       if (!hasSegmentsForCurrentType) {
         // No segments selected - use Level 2 to show parent segments aggregated

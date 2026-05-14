@@ -1,5 +1,42 @@
 import type { DataRecord, FilterState, ChartDataPoint, HeatmapCell, ComparisonTableRow } from './types'
 
+/** Default region → countries mapping when dimension metadata is absent */
+export const DEFAULT_REGION_TO_COUNTRIES: Record<string, string[]> = {
+  'North America': ['U.S.', 'Canada'],
+  'Europe': ['U.K.', 'Germany', 'Italy', 'France', 'Spain', 'Russia', 'Rest of Europe'],
+  'Asia Pacific': ['China', 'India', 'Japan', 'South Korea', 'ASEAN', 'Australia', 'Rest of Asia Pacific'],
+  'Latin America': ['Brazil', 'Argentina', 'Mexico', 'Rest of Latin America'],
+  'Middle East & Africa': ['GCC', 'South Africa', 'Rest of Middle East & Africa'],
+}
+
+export function mergeRegionToCountries(
+  geographyCountries?: Record<string, string[]>
+): Record<string, string[]> {
+  return { ...DEFAULT_REGION_TO_COUNTRIES, ...(geographyCountries || {}) }
+}
+
+/**
+ * Roll a country-level geography into its parent region only when that country is not
+ * explicitly selected. Otherwise selecting both (e.g. North America + U.S.) would merge
+ * all U.S. rows into North America and drop a bar/series.
+ */
+export function rollupChildGeoToParentIfNeeded(
+  geography: string,
+  selectedGeographies: string[],
+  regionToCountries: Record<string, string[]>
+): string {
+  for (const [region, countries] of Object.entries(regionToCountries)) {
+    if (
+      countries.includes(geography) &&
+      selectedGeographies.includes(region) &&
+      !selectedGeographies.includes(geography)
+    ) {
+      return region
+    }
+  }
+  return geography
+}
+
 /**
  * Calculate proportional distribution shares for geographies based on "By Region" data.
  * When Global-level data needs to be distributed across selected geographies,
@@ -192,6 +229,21 @@ export function filterData(
       effectiveAggregationLevel = 2
       console.log('🔍 filterData: No segments selected for segment type', filters.segmentType, ', defaulting to aggregation_level 2 (Level 1 segments)')
     }
+  }
+
+  // Leaf-only JSON (values only at deepest nodes) has no aggregation_level === 2 rows. Forcing level 2
+  // would return an empty chart; fall back to null so the "all levels / leaves only" path runs.
+  if (
+    effectiveAggregationLevel === 2 &&
+    !isRegionalSegmentType &&
+    !data.some((r) => r.segment_type === filters.segmentType && r.aggregation_level === 2)
+  ) {
+    effectiveAggregationLevel = null
+    console.log(
+      '🔍 filterData: No level-2 rows for segment type',
+      filters.segmentType,
+      '— using leaf-level records instead'
+    )
   }
   
   console.log('🔍 filterData called with aggregationLevel:', filters.aggregationLevel, 'effectiveLevel:', effectiveAggregationLevel)
@@ -397,25 +449,40 @@ export function filterData(
               }
             }
           } else {
-            // Check if this leaf's parent is one of the explicitly selected segments
-            // If so, the aggregated parent record is already included - skip the leaf to avoid double-counting
             const hierarchy = record.segment_hierarchy
-            const parentIsSelected = selectedLevel1Segments.some(selectedSeg =>
-              hierarchy.level_1 === selectedSeg
-            )
 
-            if (parentIsSelected && !isExplicitlySelectedSegment) {
-              // Parent aggregated record is already included - exclude this leaf child
-              // BUT if this leaf IS the explicitly selected segment (flat segment with no children),
-              // include it because there's no separate aggregated parent record for flat segments
+            // Skip leaves only when an aggregated ancestor row actually exists (avoids empty charts
+            // when JSON only stores values on leaf nodes).
+            const ancestorSelectedWithAggRow = selectedLevel1Segments.some((ancestor) => {
+              if (ancestor === record.segment) return false
+              const isAncestor =
+                hierarchy.level_1 === ancestor ||
+                hierarchy.level_2 === ancestor ||
+                hierarchy.level_3 === ancestor ||
+                hierarchy.level_4 === ancestor ||
+                (hierarchy.level_5 && hierarchy.level_5 === ancestor)
+              if (!isAncestor) return false
+              return data.some(
+                (r) =>
+                  r.segment_type === record.segment_type &&
+                  r.geography === record.geography &&
+                  r.segment === ancestor &&
+                  r.is_aggregated === true
+              )
+            })
+
+            if (ancestorSelectedWithAggRow && !isExplicitlySelectedSegment) {
               return false
             }
 
-            // For other cases, check if this leaf belongs to any selected segment
-            const belongsToSelectedSegment = selectedLevel1Segments.some(selectedSeg =>
-              hierarchy.level_1 === selectedSeg ||
-              hierarchy.level_2 === selectedSeg ||
-              record.segment === selectedSeg
+            const belongsToSelectedSegment = selectedLevel1Segments.some(
+              (selectedSeg) =>
+                hierarchy.level_1 === selectedSeg ||
+                hierarchy.level_2 === selectedSeg ||
+                hierarchy.level_3 === selectedSeg ||
+                hierarchy.level_4 === selectedSeg ||
+                (hierarchy.level_5 && hierarchy.level_5 === selectedSeg) ||
+                record.segment === selectedSeg
             )
 
             if (!belongsToSelectedSegment) {
@@ -705,12 +772,15 @@ export function prepareGroupedBarData(
 ): ChartDataPoint[] {
   const { yearRange, viewMode, geographies, segments, aggregationLevel } = filters
   const [startYear, endYear] = yearRange
+  const regionMap = mergeRegionToCountries(geographyCountries)
 
-  // Get selected segments for aggregation
+  // Get selected segments for aggregation (advanced multi-type and/or simple segment chips)
   const advancedSegments = filters.advancedSegments || []
-  const selectedSegmentNames = advancedSegments
+  const fromAdvanced = advancedSegments
     .filter((seg: any) => seg.type === filters.segmentType)
     .map((seg: any) => seg.segment)
+  const fromSimple = filters.segments || []
+  const selectedSegmentNames = Array.from(new Set([...fromAdvanced, ...fromSimple]))
 
   // Determine effective aggregation level (same logic as filterData)
   // This ensures chart data preparation uses the same level detection
@@ -724,7 +794,9 @@ export function prepareGroupedBarData(
     const segmentsFromSameType = advancedSegments.filter(
       (seg: any) => seg.type === filters.segmentType
     )
-    const hasSegmentsForCurrentType = segmentsFromSameType.length > 0
+    const hasSegmentsForCurrentType =
+      segmentsFromSameType.length > 0 ||
+      !!(filters.segments && filters.segments.length > 0)
 
     if (!hasSegmentsForCurrentType) {
       // No segments selected for this segment type - default to Level 2 (show parent segments)
@@ -734,6 +806,16 @@ export function prepareGroupedBarData(
       // This allows showing sub-segments when a parent is selected
       effectiveAggregationLevel = null
     }
+  }
+
+  if (
+    effectiveAggregationLevel === 2 &&
+    filters.segmentType !== 'By Region' &&
+    filters.segmentType !== 'By State' &&
+    filters.segmentType !== 'By Country' &&
+    !records.some((r) => r.segment_type === filters.segmentType && r.aggregation_level === 2)
+  ) {
+    effectiveAggregationLevel = null
   }
 
   // Generate year range
@@ -967,15 +1049,6 @@ export function prepareGroupedBarData(
         
         const geoMap = new Map<string, Map<string, number>>()
 
-        // Region to countries mapping for parent geography aggregation
-        const regionToCountriesStacked: Record<string, string[]> = {
-          'North America': ['U.S.', 'Canada'],
-          'Europe': ['U.K.', 'Germany', 'Italy', 'France', 'Spain', 'Russia', 'Rest of Europe'],
-          'Asia Pacific': ['China', 'India', 'Japan', 'South Korea', 'ASEAN', 'Australia', 'Rest of Asia Pacific'],
-          'Latin America': ['Brazil', 'Argentina', 'Mexico', 'Rest of Latin America'],
-          'Middle East & Africa': ['GCC', 'South Africa', 'Rest of Middle East & Africa']
-        }
-
         records.forEach(record => {
           let geography = record.geography
           const segment = record.segment
@@ -1004,13 +1077,7 @@ export function prepareGroupedBarData(
             }
           }
 
-          // Map child geography to parent if parent is selected
-          for (const [region, countries] of Object.entries(regionToCountriesStacked)) {
-            if (countries.includes(geography) && geographies.includes(region)) {
-              geography = region
-              break
-            }
-          }
+          geography = rollupChildGeoToParentIfNeeded(geography, geographies, regionMap)
 
           // Prevent double-counting: if this geography+segment has an aggregated record, skip leaf records
           if (aggregationLevel === null && geoSegmentAggregatedMap.has(geography)) {
@@ -1068,17 +1135,8 @@ export function prepareGroupedBarData(
             return // Skip this leaf record, use the aggregated one instead
           }
         } else if (viewMode === 'geography-mode') {
-          // In geography mode, aggregate child geographies under their parent
-          // if the parent is selected (e.g., U.S. + Canada data shown as "North America")
-          const regionToCountries: Record<string, string[]> = {
-            'North America': ['U.S.', 'Canada'],
-            'Europe': ['U.K.', 'Germany', 'Italy', 'France', 'Spain', 'Russia', 'Rest of Europe'],
-            'Asia Pacific': ['China', 'India', 'Japan', 'South Korea', 'ASEAN', 'Australia', 'Rest of Asia Pacific'],
-            'Latin America': ['Brazil', 'Argentina', 'Mexico', 'Rest of Latin America'],
-            'Middle East & Africa': ['GCC', 'South Africa', 'Rest of Middle East & Africa']
-          }
-
-          // Check if this record's geography should be aggregated under a parent
+          // In geography mode, aggregate child geographies under their parent when the child
+          // is not also explicitly selected (otherwise keep separate bars).
           let mappedGeo = record.geography
 
           // If this is Global data and non-Global geographies are selected,
@@ -1102,12 +1160,7 @@ export function prepareGroupedBarData(
             }
           }
 
-          for (const [region, countries] of Object.entries(regionToCountries)) {
-            if (countries.includes(record.geography) && geographies.includes(region)) {
-              mappedGeo = region
-              break
-            }
-          }
+          mappedGeo = rollupChildGeoToParentIfNeeded(record.geography, geographies, regionMap)
           key = mappedGeo
         } else if (viewMode === 'matrix') {
           key = `${record.geography}::${record.segment}`
@@ -1141,12 +1194,15 @@ export function prepareLineChartData(
 ): ChartDataPoint[] {
   const { yearRange, viewMode, aggregationLevel } = filters
   const [startYear, endYear] = yearRange
+  const regionMap = mergeRegionToCountries(geographyCountries)
 
-  // Get selected segments for aggregation
+  // Get selected segments for aggregation (advanced multi-type and/or simple segment chips)
   const advancedSegments = filters.advancedSegments || []
-  const selectedSegmentNames = advancedSegments
+  const fromAdvanced = advancedSegments
     .filter((seg: any) => seg.type === filters.segmentType)
     .map((seg: any) => seg.segment)
+  const fromSimple = filters.segments || []
+  const selectedSegmentNames = Array.from(new Set([...fromAdvanced, ...fromSimple]))
 
   // IMPORTANT: When user has EXPLICITLY selected segments (via Add Segment button),
   // we should NOT apply automatic Level 2 aggregation - we want to show the sub-segments individually
@@ -1158,7 +1214,9 @@ export function prepareLineChartData(
     const segmentsFromSameType = advancedSegments.filter(
       (seg: any) => seg.type === filters.segmentType
     )
-    const hasSegmentsForCurrentType = segmentsFromSameType.length > 0
+    const hasSegmentsForCurrentType =
+      segmentsFromSameType.length > 0 ||
+      !!(filters.segments && filters.segments.length > 0)
 
     if (!hasSegmentsForCurrentType) {
       // No segments selected for this segment type - default to Level 2 (show parent segments)
@@ -1168,6 +1226,16 @@ export function prepareLineChartData(
       // This allows showing sub-segments when a parent is selected
       effectiveAggregationLevel = null
     }
+  }
+
+  if (
+    effectiveAggregationLevel === 2 &&
+    filters.segmentType !== 'By Region' &&
+    filters.segmentType !== 'By State' &&
+    filters.segmentType !== 'By Country' &&
+    !records.some((r) => r.segment_type === filters.segmentType && r.aggregation_level === 2)
+  ) {
+    effectiveAggregationLevel = null
   }
 
   // Only apply Level 2 aggregation when user hasn't explicitly selected segments
@@ -1224,7 +1292,13 @@ export function prepareLineChartData(
             if (record.segment === seg) return true
             // Hierarchy match - if this is a child record of a selected segment
             const hierarchy = record.segment_hierarchy
-            return hierarchy.level_1 === seg || hierarchy.level_2 === seg
+            return (
+              hierarchy.level_1 === seg ||
+              hierarchy.level_2 === seg ||
+              hierarchy.level_3 === seg ||
+              hierarchy.level_4 === seg ||
+              (hierarchy.level_5 && hierarchy.level_5 === seg)
+            )
           })
 
           if (matchedSegment) {
@@ -1272,15 +1346,6 @@ export function prepareLineChartData(
         }
       } else if (viewMode === 'geography-mode') {
         // Lines represent geographies (aggregate across segments)
-        // Map child geographies to their parent if parent is selected
-        const regionToCountriesLine: Record<string, string[]> = {
-          'North America': ['U.S.', 'Canada'],
-          'Europe': ['U.K.', 'Germany', 'Italy', 'France', 'Spain', 'Russia', 'Rest of Europe'],
-          'Asia Pacific': ['China', 'India', 'Japan', 'South Korea', 'ASEAN', 'Australia', 'Rest of Asia Pacific'],
-          'Latin America': ['Brazil', 'Argentina', 'Mexico', 'Rest of Latin America'],
-          'Middle East & Africa': ['GCC', 'South Africa', 'Rest of Middle East & Africa']
-        }
-
         let mappedGeo = record.geography
 
         // If this is Global data and non-Global geographies are selected,
@@ -1302,12 +1367,7 @@ export function prepareLineChartData(
           }
         }
 
-        for (const [region, countries] of Object.entries(regionToCountriesLine)) {
-          if (countries.includes(record.geography) && filters.geographies.includes(region)) {
-            mappedGeo = region
-            break
-          }
-        }
+        mappedGeo = rollupChildGeoToParentIfNeeded(record.geography, filters.geographies, regionMap)
         key = mappedGeo
       } else if (viewMode === 'matrix') {
         // Lines represent geography-segment combinations
@@ -1784,11 +1844,13 @@ export function prepareIntelligentMultiLevelData(
     years.push(year)
   }
 
-  // Get explicitly selected segments from advancedSegments
+  // Get explicitly selected segments from advancedSegments and/or filters.segments
   const advancedSegments = (filters as any).advancedSegments || []
-  const selectedLevel1Segments = advancedSegments
+  const fromAdvanced = advancedSegments
     .filter((seg: any) => seg.type === filters.segmentType)
     .map((seg: any) => seg.segment)
+  const fromSimple = filters.segments || []
+  const selectedLevel1Segments = Array.from(new Set([...fromAdvanced, ...fromSimple]))
 
   // DEBUG: Log what records we received
   console.log('📊 prepareIntelligentMultiLevelData received:', {
@@ -1808,14 +1870,7 @@ export function prepareIntelligentMultiLevelData(
     }))
   })
 
-  // Region to countries mapping for geography-mode
-  const regionToCountries: Record<string, string[]> = {
-    'North America': ['U.S.', 'Canada'],
-    'Europe': ['U.K.', 'Germany', 'Italy', 'France', 'Spain', 'Russia', 'Rest of Europe'],
-    'Asia Pacific': ['China', 'India', 'Japan', 'South Korea', 'ASEAN', 'Australia', 'Rest of Asia Pacific'],
-    'Latin America': ['Brazil', 'Argentina', 'Mexico', 'Rest of Latin America'],
-    'Middle East & Africa': ['GCC', 'South Africa', 'Rest of Middle East & Africa']
-  }
+  const regionMap = mergeRegionToCountries(geographyCountries)
 
   // Check if we need Global-to-geography mapping (for any non-Global geography selection)
   const hasNonGlobalSelection = geographies.some(g => g !== 'Global')
@@ -1883,7 +1938,13 @@ export function prepareIntelligentMultiLevelData(
           if (record.segment === seg) return true
           // Hierarchy match - if this is a child record of a selected segment
           const hierarchy = record.segment_hierarchy
-          return hierarchy.level_1 === seg || hierarchy.level_2 === seg
+          return (
+            hierarchy.level_1 === seg ||
+            hierarchy.level_2 === seg ||
+            hierarchy.level_3 === seg ||
+            hierarchy.level_4 === seg ||
+            (hierarchy.level_5 && hierarchy.level_5 === seg)
+          )
         })
 
         if (matchedSegment) {
@@ -1909,14 +1970,9 @@ export function prepareIntelligentMultiLevelData(
         const selectedNonGlobal = geographies.filter(g => g !== 'Global')
         key = selectedNonGlobal[0] || record.geography
       } else {
-        // Map child geographies to parent if parent is selected
+        // Map child geographies to parent only when the child is not explicitly selected
         let mappedGeo = record.geography
-        for (const [region, countries] of Object.entries(regionToCountries)) {
-          if (countries.includes(record.geography) && geographies.includes(region)) {
-            mappedGeo = region
-            break
-          }
-        }
+        mappedGeo = rollupChildGeoToParentIfNeeded(mappedGeo, geographies, regionMap)
         key = mappedGeo
       }
     } else {
@@ -2016,6 +2072,9 @@ export function prepareIntelligentMultiLevelData(
         dataPoint[key] = groupRecords.reduce((sum, r) =>
           sum + (r.time_series[year] || 0), 0
         )
+      } else if (viewMode === 'geography-mode' && groupRecords.length > 1) {
+        // Geography-mode groups multiple segment rows under one geo key — sum them
+        dataPoint[key] = groupRecords.reduce((sum, r) => sum + (r.time_series[year] || 0), 0)
       } else {
         // Standard logic for non-Level 1 selections
         const leafRecord = groupRecords.find(r => !r.is_aggregated)

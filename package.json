@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "export-cmi-json": "node scripts/export-cmi-json.cjs"
   },
   "dependencies": {
     "@radix-ui/react-select": "^2.2.6",
