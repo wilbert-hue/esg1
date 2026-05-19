@@ -217,7 +217,7 @@ export default function DashboardPage() {
                 Coherent Dashboard
               </h1>
               <h2 className="text-sm text-black">
-                {dashboardName || 'Global Park Lock Actuators Market'}
+                {dashboardName || 'Global ESG & Sustainability Advisory Market'}
               </h2>
             </div>
           </div>

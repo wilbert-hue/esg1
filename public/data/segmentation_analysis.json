@@ -1,31 +1,38 @@
 {
   "Global": {
-    "By Actuation Technology": {
-      "Electromechanical Park Lock Actuators": {},
-      "Electrohydraulic Park Lock Actuators": {}
+    "By Service Type": {
+      "ESG Strategy, Governance and Roadmap Advisory": {},
+      "Climate Change, Decarbonization and Net-Zero Advisory": {},
+      "ESG Reporting, Disclosure and Framework Alignment Advisory": {},
+      "ESG Regulatory Compliance and Assurance Readiness Advisory": {},
+      "ESG Risk, Due Diligence and Transaction Advisory": {},
+      "ESG Data, Ratings, Benchmarking and Performance Monitoring Advisory": {},
+      "Sustainable Supply Chain, Human Rights and Social Impact Advisory": {},
+      "Others (Biodiversity Advisory, Circular Economy Advisory, Sustainable Finance Advisory, Green Building Advisory, and ESG Training Services)": {}
     },
-    "By Motion Output Type": {
-      "Rotary Output Park Lock Actuators": {},
-      "Linear Output Park Lock Actuators": {}
+    "By Delivery Model": {
+      "On-site Advisory": {},
+      "Remote Advisory": {},
+      "Hybrid Advisory": {}
     },
-    "By Transmission and Driveline Application": {
-      "Torque Converter Automatic Transmission Park Lock Actuators": {},
-      "Dual-Clutch Transmission Park Lock Actuators": {},
-      "Electric Drive Unit and E-Axle Park Lock Actuators": {},
-      "Automated Manual Transmission Park Lock Actuators": {},
-      "Others (Dedicated Hybrid Transmission Park Lock Actuators, Continuously Variable Transmission Park Lock Actuators, etc.)": {}
+    "By Organization Size": {
+      "Large Enterprises": {},
+      "Small & Medium Enterprises": {}
     },
-    "By Vehicle Type": {
-      "Passenger Cars": {},
-      "Commercial Vehicles": {
-        "Light Commercial Vehicles": {},
-        "Medium and Heavy Commercial Vehicles": {}
-      },
-      "Off-Highway Vehicles": {}
-    },
-    "By Sales Channel": {
-      "OEM Fitment": {},
-      "Aftermarket Replacement": {}
+    "By Industry Vertical": {
+      "BFSI": {},
+      "Oil & Gas": {},
+      "Power, Utilities and Renewables": {},
+      "Mining and Metals": {},
+      "Manufacturing": {},
+      "Retail and Consumer Goods": {},
+      "Healthcare and Pharmaceuticals": {},
+      "IT and Telecommunications": {},
+      "Transportation and Logistics": {},
+      "Construction and Real Estate": {},
+      "Government and Public Sector": {},
+      "Food and Agriculture": {},
+      "Others (Education, Hospitality, Media, and Nonprofit Organizations)": {}
     },
     "By Region": {
       "North America": {

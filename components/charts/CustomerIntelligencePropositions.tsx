@@ -9,7 +9,6 @@ import {
   parseGroupedHeader,
   padRow,
   sanitizeMislabeledGroupHeaders,
-  stripColumnGroupByLabel,
   trimTrailingEmptyColumns,
 } from '@/lib/cmi-propositions'
 import { cn } from '@/lib/utils'
@@ -135,9 +134,7 @@ export function CustomerIntelligencePropositions({ title }: { title?: string }) 
         {payload.propositions.map((p, index) => {
           let table = trimTrailingEmptyColumns(p)
           table = sanitizeMislabeledGroupHeaders(table)
-          if (table.id === 1) {
-            table = stripColumnGroupByLabel(table, 'Professional Drivers')
-          }
+          // No column stripping needed for ESG propositions
           return (
           <details
             key={p.id}
