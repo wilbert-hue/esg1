@@ -48,8 +48,7 @@ const regionPrefixes: Record<string, string[]> = {
   'Latin America': ['Latino', 'Americas', 'Continental', 'Regional', 'National'],
   'Europe': ['European', 'Continental', 'Regional', 'National', 'Metropolitan'],
   'Asia Pacific': ['Asia', 'Pacific', 'Regional', 'National', 'Metropolitan'],
-  'Middle East': ['Middle East', 'Gulf', 'Regional', 'National', 'Emirates'],
-  'Africa': ['African', 'Regional', 'National', 'East Africa', 'Continental']
+  'Middle East & Africa': ['Middle East', 'Regional', 'National', 'Gulf', 'African']
 }
 
 function generateCustomerName(region: string, endUserSegment: string, index: number): string {
@@ -90,8 +89,7 @@ function generateCustomerCount(region: string, endUserSegment: string): number {
     'Europe': 1.0,
     'Asia Pacific': 1.3,
     'Latin America': 0.7,
-    'Middle East': 0.65,
-    'Africa': 0.55
+    'Middle East & Africa': 0.6
   }
 
   // Base multipliers by end user type
@@ -131,8 +129,7 @@ export function generateCustomerIntelligenceData(): CustomerIntelligenceData[] {
     'Latin America',
     'Europe',
     'Asia Pacific',
-    'Middle East',
-    'Africa'
+    'Middle East & Africa'
   ]
 
   const endUserSegments = [
@@ -328,10 +325,8 @@ export function parseCustomerIntelligenceFromData(rows: Record<string, any>[]): 
         normalizedRegion = 'Europe'
       } else if (lowerRegion.includes('asia') || lowerRegion.includes('pacific')) {
         normalizedRegion = 'Asia Pacific'
-      } else if (lowerRegion.includes('middle east')) {
-        normalizedRegion = 'Middle East'
-      } else if (lowerRegion.includes('africa')) {
-        normalizedRegion = 'Africa'
+      } else if (lowerRegion.includes('middle east') || lowerRegion.includes('africa')) {
+        normalizedRegion = 'Middle East & Africa'
       } else {
         normalizedRegion = region
       }
@@ -354,11 +349,8 @@ export function parseCustomerIntelligenceFromData(rows: Record<string, any>[]): 
         } else if (value.includes('asia') || value.includes('pacific')) {
           normalizedRegion = 'Asia Pacific'
           break
-        } else if (value.includes('middle east')) {
-          normalizedRegion = 'Middle East'
-          break
-        } else if (value.includes('africa')) {
-          normalizedRegion = 'Africa'
+        } else if (value.includes('middle east') || value.includes('africa')) {
+          normalizedRegion = 'Middle East & Africa'
           break
         }
       }
