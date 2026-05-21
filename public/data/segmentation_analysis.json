@@ -1,39 +1,5 @@
 {
   "Global": {
-    "By Service Type": {
-      "ESG Strategy, Governance and Roadmap Advisory": {},
-      "Climate Change, Decarbonization and Net-Zero Advisory": {},
-      "ESG Reporting, Disclosure and Framework Alignment Advisory": {},
-      "ESG Regulatory Compliance and Assurance Readiness Advisory": {},
-      "ESG Risk, Due Diligence and Transaction Advisory": {},
-      "ESG Data, Ratings, Benchmarking and Performance Monitoring Advisory": {},
-      "Sustainable Supply Chain, Human Rights and Social Impact Advisory": {},
-      "Others (Biodiversity Advisory, Circular Economy Advisory, Sustainable Finance Advisory, Green Building Advisory, and ESG Training Services)": {}
-    },
-    "By Delivery Model": {
-      "On-site Advisory": {},
-      "Remote Advisory": {},
-      "Hybrid Advisory": {}
-    },
-    "By Organization Size": {
-      "Large Enterprises": {},
-      "Small & Medium Enterprises": {}
-    },
-    "By Industry Vertical": {
-      "BFSI": {},
-      "Oil & Gas": {},
-      "Power, Utilities and Renewables": {},
-      "Mining and Metals": {},
-      "Manufacturing": {},
-      "Retail and Consumer Goods": {},
-      "Healthcare and Pharmaceuticals": {},
-      "IT and Telecommunications": {},
-      "Transportation and Logistics": {},
-      "Construction and Real Estate": {},
-      "Government and Public Sector": {},
-      "Food and Agriculture": {},
-      "Others (Education, Hospitality, Media, and Nonprofit Organizations)": {}
-    },
     "By Region": {
       "North America": {
         "U.S.": {},
@@ -75,6 +41,40 @@
         "Rwanda": {},
         "Rest of Africa": {}
       }
+    },
+    "By Service Type": {
+      "ESG Strategy, Governance and Roadmap Advisory": {},
+      "Climate Change, Decarbonization and Net-Zero Advisory": {},
+      "ESG Reporting, Disclosure and Framework Alignment Advisory": {},
+      "ESG Regulatory Compliance and Assurance Readiness Advisory": {},
+      "ESG Risk, Due Diligence and Transaction Advisory": {},
+      "ESG Data, Ratings, Benchmarking and Performance Monitoring Advisory": {},
+      "Sustainable Supply Chain, Human Rights and Social Impact Advisory": {},
+      "Others (Biodiversity Advisory, Circular Economy Advisory, Sustainable Finance Advisory, Green Building Advisory, and ESG Training Services)": {}
+    },
+    "By Delivery Model": {
+      "On-site Advisory": {},
+      "Remote Advisory": {},
+      "Hybrid Advisory": {}
+    },
+    "By Customer Ownership Type": {
+      "Private Sector Customers": {},
+      "Public Sector Customers": {}
+    },
+    "By Institution Size": {
+      "Large Financial Institutions": {},
+      "Small and Medium Financial Institutions": {}
+    },
+    "By BFSI Institution Type": {
+      "Banks": {},
+      "Insurance Companies": {},
+      "Asset Management Firms": {},
+      "Private Equity and Venture Capital Firms": {},
+      "Pension Funds and Sovereign Wealth Funds": {},
+      "Microfinance Institutions": {},
+      "Fintech and Digital Financial Service Providers": {},
+      "Development Finance Institutions": {},
+      "Others (Credit Unions, Leasing Companies, Brokerage Firms, and Payment Service Providers)": {}
     }
   }
 }

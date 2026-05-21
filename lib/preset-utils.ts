@@ -33,6 +33,7 @@ function getCountryGeographiesSet(data: ComparisonData | null): Set<string> | nu
 export function preferredSegmentType(data: ComparisonData | null): string | null {
   if (!data?.dimensions?.segments) return null
   if (data.dimensions.segments['By Service Type']) return 'By Service Type'
+  if (data.dimensions.segments['By BFSI Institution Type']) return 'By BFSI Institution Type'
   if (data.dimensions.segments['By Actuation Technology']) return 'By Actuation Technology'
   return getFirstSegmentType(data)
 }
