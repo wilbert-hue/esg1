@@ -63,10 +63,17 @@
         "Mexico": {},
         "Rest of Latin America": {}
       },
-      "Middle East & Africa": {
+      "Middle East": {
         "GCC": {},
-        "South Africa": {},
-        "Rest of Middle East & Africa": {}
+        "Israel": {},
+        "Rest of Middle East": {}
+      },
+      "Africa": {
+        "Kenya": {},
+        "Uganda": {},
+        "Tanzania": {},
+        "Rwanda": {},
+        "Rest of Africa": {}
       }
     }
   }
