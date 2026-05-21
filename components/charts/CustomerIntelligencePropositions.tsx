@@ -124,10 +124,6 @@ export function CustomerIntelligencePropositions({ title }: { title?: string }) 
         <h2 className="text-lg font-semibold text-black">
           {title || 'Customer Intelligence'}
         </h2>
-        <p className="mt-1 text-xs text-gray-600">
-          Tables match the CMI sample workbook structure (two header levels, column grouping). Source:{' '}
-          <span className="font-medium text-gray-800">{payload.source}</span>
-        </p>
       </div>
 
       <div className="flex flex-col gap-4">
