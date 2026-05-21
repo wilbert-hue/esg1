@@ -1472,7 +1472,7 @@ export async function processJsonDataAsync(
     
     // Build metadata
     const metadata: Metadata = {
-      market_name: 'ESG & Sustainability Advisory Market',
+      market_name: 'and Africa ESG & Sustainability Advisory for BFSI Market',
       market_type: 'Market Analysis',
       industry: 'ESG Advisory',
       years: allYears,
