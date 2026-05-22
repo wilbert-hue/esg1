@@ -1,44 +1,22 @@
 {
   "Global": {
     "By Region": {
-      "North America": {
-        "U.S.": {},
-        "Canada": {}
-      },
-      "Europe": {
-        "U.K.": {},
-        "Germany": {},
-        "Italy": {},
-        "France": {},
-        "Spain": {},
-        "Russia": {},
-        "Rest of Europe": {}
-      },
-      "Asia Pacific": {
-        "China": {},
-        "India": {},
-        "Japan": {},
-        "South Korea": {},
-        "ASEAN": {},
-        "Australia": {},
-        "Rest of Asia Pacific": {}
-      },
-      "Latin America": {
-        "Brazil": {},
-        "Argentina": {},
-        "Mexico": {},
-        "Rest of Latin America": {}
-      },
-      "Middle East": {
-        "GCC": {},
-        "Israel": {},
-        "Rest of Middle East": {}
-      },
+      "North America": {},
+      "Europe": {},
+      "Asia Pacific": {},
+      "Latin America": {},
+      "Middle East": {},
       "Africa": {
+        "South Africa": {},
         "Kenya": {},
+        "Nigeria": {},
+        "Egypt": {},
+        "Morocco": {},
+        "Mauritius": {},
+        "Ghana": {},
+        "Rwanda": {},
         "Uganda": {},
         "Tanzania": {},
-        "Rwanda": {},
         "Rest of Africa": {}
       }
     },

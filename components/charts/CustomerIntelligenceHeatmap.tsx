@@ -185,7 +185,8 @@ export function CustomerIntelligenceHeatmap({ title, height = 600, filePath }: C
       'Latin America',
       'Europe',
       'Asia Pacific',
-      'Middle East & Africa'
+      'Middle East',
+      'Africa'
     ]
     
     const defaultSegments = [
